@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Page Title</title>
+    <title> View Counter </title>
+    <!-- import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    // import { getDatabase } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";-->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
+    <link rel="stylesheet" href="http:cdnjs.cloudfare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
   </head>
 
   <body>
-  
-    <h1>My First Heading</h1>
-    <p>My first paragraph.</p>
+    <div id="counter">
+      <h1 id="view_count_header"> REALTIME VIEW COUNTER </h1> 
+      <div id="view_count_counter">
+        <p id="view_count_text"> </p> 
+      </div>
+    </div>
+  </body>
 
-    const firebaseConfig = {
+  <script type="application/javascript">
+    var firebaseConfig = {
     apiKey: "AIzaSyCcbGOKLQK8RtbCEMYM0QMUYf9zCVkRleM",
     authDomain: "realtime-view-counter-97a36.firebaseapp.com",
     databaseURL: "https://realtime-view-counter-97a36-default-rtdb.firebaseio.com",
@@ -18,5 +28,35 @@
     messagingSenderId: "625390877657",
     appId: "1:625390877657:web:a663702ee02bd43bd7f7c8"
   };
-  </body>
+  // initialize firebase
+  firebase.initializeApp(firebaseConfig);
+
+    function get_viewers_ip(json){
+      viewers_ip = json.ip;
+      //count view w ip
+      count_view(viewers_ip);
+    }
+
+    function count_view(viewers_ip){
+      var views;
+      var ip_to_string = viewers_ip.toString();
+
+      for(var i, i = 0; i < ip_to_string.length; i++){
+        ip_to_string = ip_to_string.replace(".", "-");
+      }
+
+      firebase.database().ref().child("page_views/" + ip_to_string).set({
+        viewers_ip: viewers_ip
+      });
+
+      firebase.datebase().ref().child("page_views").on("value", function(snapshot){
+        views = snapshot.numChildren();
+        document.getElementById("view_count_text").innerHTML = "<i class='fa fa-eye'></i>" + views;
+      });
+    }
+    
+  </script>
+
+  <script type="application/javascript" src="https:api.ipify.org?format=jsonp&callback=get_viewers_ip"> </script>
+    
 </html>
