@@ -1,47 +1,53 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title> View Counter </title>
-    <!-- import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    // import { getDatabase } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";-->
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
-    <link rel="stylesheet" href="http:cdnjs.cloudfare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-  </head>
+<html lang="en">
 
-  <body>
-    <div id="counter">
-      <h1 id="view_count_header"> REALTIME VIEW COUNTER </h1> 
-      <div id="view_count_counter">
-        <p id="view_count_text"> </p> 
-      </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Counter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <div id="counter">
+    <h1 id="view_count_header">REALTIME VIEW COUNTER</h1>
+    <div id="view_count_counter">
+      <p id="view_count_text"></p>
     </div>
-  </body>
+  </div>
 
-  <script type="application/javascript">
-    var firebaseConfig = {
-    apiKey: "AIzaSyCcbGOKLQK8RtbCEMYM0QMUYf9zCVkRleM",
-    authDomain: "realtime-view-counter-97a36.firebaseapp.com",
-    databaseURL: "https://realtime-view-counter-97a36-default-rtdb.firebaseio.com",
-    projectId: "realtime-view-counter-97a36",
-    storageBucket: "realtime-view-counter-97a36.appspot.com",
-    messagingSenderId: "625390877657",
-    appId: "1:625390877657:web:a663702ee02bd43bd7f7c8"
-  };
-  // initialize firebase
-  firebase.initializeApp(firebaseConfig);
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 
-    function get_viewers_ip(json){
-      viewers_ip = json.ip;
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCcbGOKLQK8RtbCEMYM0QMUYf9zCVkRleM",
+      authDomain: "realtime-view-counter-97a36.firebaseapp.com",
+      databaseURL: "https://realtime-view-counter-97a36-default-rtdb.firebaseio.com",
+      projectId: "realtime-view-counter-97a36",
+      storageBucket: "realtime-view-counter-97a36.appspot.com",
+      messagingSenderId: "625390877657",
+      appId: "1:625390877657:web:6f0583c6868f5c76d7f7c8"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // initialize firebase
+    firebase.initializeApp(firebaseConfig);
+
+    function get_viewers_ip(json) {
+      const viewers_ip = json.ip;
       //count view w ip
       count_view(viewers_ip);
     }
 
-    function count_view(viewers_ip){
-      var views;
-      var ip_to_string = viewers_ip.toString();
+    function count_view(viewers_ip) {
+      let views;
+      let ip_to_string = viewers_ip.toString();
 
-      for(var i, i = 0; i < ip_to_string.length; i++){
+      for (let i = 0; i < ip_to_string.length; i++) {
         ip_to_string = ip_to_string.replace(".", "-");
       }
 
@@ -49,14 +55,14 @@
         viewers_ip: viewers_ip
       });
 
-      firebase.datebase().ref().child("page_views").on("value", function(snapshot){
+      firebase.database().ref().child("page_views").on("value", function (snapshot) {
         views = snapshot.numChildren();
         document.getElementById("view_count_text").innerHTML = "<i class='fa fa-eye'></i>" + views;
       });
     }
-    
   </script>
 
-  <script type="application/javascript" src="https:api.ipify.org?format=jsonp&callback=get_viewers_ip"> </script>
-    
+  <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=get_viewers_ip"></script>
+</body>
+
 </html>
